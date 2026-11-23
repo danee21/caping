@@ -497,6 +497,17 @@ function usersPage() {
     `<div class="panel"><div class="table-responsive"><table class="table"><thead><tr><th>Nama</th><th>Username</th><th>Role</th><th>KUA</th><th>Status</th><th></th></tr></thead><tbody>${rows.length ? rows.map((x) => `<tr><td>${esc(x.name)}</td><td>${esc(x.username)}</td><td>${esc(x.role)}</td><td>${esc(x.kua || "—")}</td><td>${x.active ? "Aktif" : "Nonaktif"}</td><td><button class="btn btn-sm btn-light" onclick="openUserForm('${esc(x.username)}')"><i class="bi bi-pencil"></i></button></td></tr>`).join("") : '<tr><td colspan="6"><div class="empty">Belum ada data pengguna.</div></td></tr>'}</tbody></table></div></div>`;
 }
 
+function togglePwVisibility(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  const isPass = inp.type === "password";
+  inp.type = isPass ? "text" : "password";
+  const icon = btn.querySelector("i");
+  if (icon) {
+    icon.className = isPass ? "bi bi-eye-slash" : "bi bi-eye";
+  }
+}
+
 function openUserForm(username = "") {
   const usersList = Array.isArray(db.users) ? db.users : [];
   let old = username ? usersList.find((x) => x.username === username) || {} : {};
@@ -507,7 +518,7 @@ function openUserForm(username = "") {
     `<div class="col-md-6"><label class="form-label">Username</label><input class="form-control" name="username" required ${username ? "readonly" : ""} value="${esc(old.username || "")}"></div>` +
     `<div class="col-md-6"><label class="form-label">Role</label><select class="form-select" name="role"><option value="kua" ${old.role === "kua" ? "selected" : ""}>KUA</option><option value="admin" ${old.role === "admin" ? "selected" : ""}>Admin Kabupaten</option></select></div>` +
     `<div class="col-md-6"><label class="form-label">Nama KUA</label><input class="form-control" name="kua" value="${esc(old.kua || "")}"></div>` +
-    `<div class="col-md-6"><label class="form-label">Password ${username ? "(kosongkan jika tidak diganti)" : ""}</label><input class="form-control" name="password" type="password" ${username ? "" : "required"} minlength="10"></div>` +
+    `<div class="col-md-6"><label class="form-label">Password ${username ? "(kosongkan jika tidak diganti)" : ""}</label><div class="input-group"><input id="userPwInput" class="form-control" name="password" type="password" ${username ? "" : "required"} minlength="10"><button type="button" class="btn btn-outline-secondary" title="Lihat / sembunyikan password" onclick="togglePwVisibility('userPwInput', this)"><i class="bi bi-eye"></i></button></div></div>` +
     `<div class="col-md-6"><label class="form-label">Status</label><select class="form-select" name="active"><option value="true" ${old.active !== false ? "selected" : ""}>Aktif</option><option value="false" ${old.active === false ? "selected" : ""}>Nonaktif</option></select></div>`;
   $("#dataForm").dataset.key = "users";
   $("#dataForm").dataset.id = username;
@@ -532,3 +543,4 @@ window.openForm = openForm;
 window.del = del;
 window.exportCsv = exportCsv;
 window.openUserForm = openUserForm;
+window.togglePwVisibility = togglePwVisibility;
