@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIP-CAPING | Kemenag Sleman</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+:root{--green:#087443;--deep:#075b36;--mint:#eaf5ef;--ink:#20332a;--muted:#718078;--line:#e7eee9}
+*{box-sizing:border-box}body{background:#f5f8f6;color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}
+.login-wrap{min-height:100vh;background:linear-gradient(135deg,#064c30,#0b8050);display:grid;place-items:center;padding:20px}
+.login-card{width:min(430px,100%);background:white;border-radius:22px;padding:34px;box-shadow:0 24px 80px #002c1c55}
+.brand-mark{width:44px;height:44px;border-radius:14px;background:var(--mint);display:grid;place-items:center;color:var(--green);font-size:22px}
+.app-shell{display:none;min-height:100vh}.sidebar{width:252px;background:#073f2a;color:#d6e8dd;position:fixed;inset:0 auto 0 0;padding:22px 14px;z-index:1030;display:flex;flex-direction:column}
+.side-brand{display:flex;gap:12px;align-items:center;padding:0 10px 25px}.side-brand .brand-mark{background:#ffffff1c;color:white}
+.nav-caption{font-size:10px;text-transform:uppercase;letter-spacing:1.4px;color:#86aa96;padding:16px 12px 7px;font-weight:700}
+.side-link{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:10px;color:#c6ddcf;text-decoration:none;margin:2px 0;font-weight:500;cursor:pointer}
+.side-link:hover,.side-link.active{background:#ffffff19;color:white}.side-link.active{box-shadow:inset 3px 0 #83d7a6}
+.main{margin-left:252px;min-height:100vh}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:900}
+.content{padding:28px 30px;max-width:1600px;margin:auto}.page-title{font-size:24px;font-weight:750;letter-spacing:-.5px}.subtle{color:var(--muted)}
+.stat-card,.panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:19px;height:100%;box-shadow:0 3px 12px #143c2410}
+.stat-icon{width:42px;height:42px;border-radius:12px;background:var(--mint);color:var(--green);display:grid;place-items:center;font-size:19px}
+.stat-value{font-size:27px;font-weight:750;letter-spacing:-.7px;margin-top:13px}.stat-label{font-size:12px;color:var(--muted)}
+.btn-green{background:var(--green);color:white;border-color:var(--green)}.btn-green:hover{background:var(--deep);color:white}
+.table thead th{background:#f5f8f6;color:#627269;font-size:11px;text-transform:uppercase;letter-spacing:.45px;font-weight:700;border-bottom:1px solid var(--line);white-space:nowrap}
+.table td{vertical-align:middle;font-size:13px}.table>:not(caption)>*>*{padding:12px 13px}
+.form-label{font-size:12px;font-weight:650;color:#52645a}.form-control,.form-select{border-color:#dce7df;border-radius:9px;padding:9px 11px;font-size:13px}.form-control:focus,.form-select:focus{border-color:#64ad83;box-shadow:0 0 0 .2rem #08744318}
+.badge-soft{background:var(--mint);color:var(--green)}.empty{padding:42px 15px;text-align:center;color:#819087}
+.mobile-toggle{display:none}.toast-container{z-index:2000}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.show{transform:translateX(0)}.main{margin-left:0}.mobile-toggle{display:inline-flex}.topbar{padding:0 16px}.content{padding:20px 15px}}
+</style></head>
+<body>
+<div id="loginView" class="login-wrap">
+ <div class="login-card">
+  <div class="d-flex align-items-center gap-3 mb-4"><div class="brand-mark"><i class="bi bi-tree-fill"></i></div><div><div class="fw-bold fs-5">SIP-CAPING</div><div class="small subtle">Kementerian Agama Kabupaten Sleman</div></div></div>
+  <h4 class="fw-bold mb-1">Selamat datang</h4><p class="subtle mb-4">Masuk untuk mengelola data CAPING.</p>
+  <form id="loginForm"><div class="mb-3"><label class="form-label">Username</label><input class="form-control form-control-lg" name="username" required autocomplete="username"></div><div class="mb-3"><label class="form-label">Password</label><input class="form-control form-control-lg" type="password" name="password" required autocomplete="current-password"></div><button class="btn btn-green btn-lg w-100 mt-2" id="loginBtn">Masuk <i class="bi bi-arrow-right ms-1"></i></button><div id="loginError" class="text-danger small mt-3"></div></form>
+  <div class="border-top mt-4 pt-3 small subtle">Akses resmi • Data terpusat • Tanpa unggah bukti</div>
+ </div>
+</div>
+<div id="appShell" class="app-shell">
+ <aside class="sidebar" id="sidebar">
+  <div class="side-brand"><div class="brand-mark"><i class="bi bi-tree-fill"></i></div><div><div class="fw-bold text-white">SIP-CAPING</div><div class="small" style="color:#9bbba8">Kemenag Sleman</div></div></div>
+  <div class="nav-caption">Menu utama</div>
+  <a class="side-link active" data-page="dashboard"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+  <a class="side-link" data-page="catin"><i class="bi bi-people"></i> Data Catin</a>
+  <a class="side-link" data-page="penerimaan"><i class="bi bi-box-arrow-in-down"></i> Penerimaan</a>
+  <a class="side-link" data-page="realisasi"><i class="bi bi-box-arrow-up-right"></i> Realisasi</a>
+  <a class="side-link" data-page="monitoring"><i class="bi bi-clipboard-check"></i> Monitoring</a>
+  <div class="nav-caption">Analisis</div>
+  <a class="side-link" data-page="laporan"><i class="bi bi-file-earmark-bar-graph"></i> Laporan & Kontrol</a>
+  <a class="side-link admin-only" data-page="users"><i class="bi bi-person-gear"></i> Pengguna</a>
+  <div class="mt-auto pt-3 border-top" style="border-color:#ffffff25!important"><div class="small text-white fw-semibold" id="sideName">Pengguna</div><div class="small" style="color:#9bbba8" id="sideRole">Role</div><a class="side-link mt-2" id="logoutBtn"><i class="bi bi-box-arrow-left"></i> Keluar</a></div>
+ </aside>
+ <main class="main">
+  <header class="topbar"><div class="d-flex align-items-center gap-3"><button class="btn btn-light mobile-toggle" id="menuToggle"><i class="bi bi-list"></i></button><div><div class="fw-bold" id="topTitle">Dashboard</div><div class="small subtle">Sistem Informasi Pencatatan CAPING</div></div></div><div class="d-flex align-items-center gap-2"><span class="badge rounded-pill badge-soft" id="rolePill">ADMIN</span><div class="rounded-circle bg-light d-grid place-items-center" style="width:36px;height:36px;display:grid;place-items:center"><i class="bi bi-person text-success"></i></div></div></header>
+  <section class="content" id="pageContent"></section>
+ </main>
+</div>
+<div class="toast-container position-fixed bottom-0 end-0 p-3"><div id="toast" class="toast"><div class="toast-header"><strong class="me-auto">SIP-CAPING</strong><button class="btn-close" data-bs-dismiss="toast"></button></div><div class="toast-body" id="toastBody"></div></div></div>
+<div class="modal fade" id="dataModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content border-0 rounded-4"><div class="modal-header"><div><h5 class="modal-title fw-bold" id="modalTitle">Tambah Data</h5><div class="small subtle" id="modalSub"></div></div><button class="btn-close" data-bs-dismiss="modal"></button></div><form id="dataForm"><div class="modal-body"><div class="row g-3" id="formFields"></div></div><div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button><button class="btn btn-green" id="saveBtn">Simpan Data</button></div></form></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js"></script>
+</body></html>
